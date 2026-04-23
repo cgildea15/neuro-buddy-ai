@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Neuro Buddy - EI Framework</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 1rem; background: #f0f2f5; }
+        .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        select, textarea { width: 100%; margin: 10px 0; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; background: #5a67d8; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .entry { background: #fff; margin-bottom: 10px; padding: 12px; border-radius: 8px; border-left: 5px solid #5a67d8; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Neuro Buddy</h2>
+    
+    <label>Select Pillar:</label>
+    <select id="pillarSelect">
+        <option value="Self-Awareness">Self-Awareness</option>
+        <option value="Self-Management">Self-Management</option>
+        <option value="Social Awareness">Social Awareness</option>
+        <option value="Relationship Skills">Relationship Skills</option>
+        <option value="Responsible Decision-Making">Responsible Decision-Making</option>
+    </select>
+
+    <label>Current Stress Level:</label>
+    <select id="stressLevel">
+        <option value="1">1 (Calm)</option>
+        <option value="5">5 (Neutral)</option>
+        <option value="10">10 (Overwhelmed)</option>
+    </select>
+
+    <textarea id="thoughtInput" placeholder="What is happening? (Antecedent -> Behavior)"></textarea>
+    <button onclick="saveEntry()">Log Entry</button>
+</div>
+
+<div id="logEntries"></div>
+
+<script>
+    function saveEntry() {
+        const entry = {
+            pillar: document.getElementById('pillarSelect').value,
+            level: document.getElementById('stressLevel').value,
+            thought: document.getElementById('thoughtInput').value,
+            timestamp: new Date().toLocaleTimeString()
+        };
+        
+        const log = document.getElementById('logEntries');
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `<strong>${entry.timestamp} | ${entry.pillar} (Level ${entry.level})</strong><br>${entry.thought}`;
+        log.prepend(div);
+        
+        document.getElementById('thoughtInput').value = '';
+    }
+</script>
+
+</body>
+</html>
