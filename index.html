@@ -2,58 +2,98 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neuro Buddy - EI Framework</title>
     <style>
         body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 1rem; background: #f0f2f5; }
-        .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        select, textarea { width: 100%; margin: 10px 0; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
-        button { padding: 10px 20px; background: #5a67d8; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        .entry { background: #fff; margin-bottom: 10px; padding: 12px; border-radius: 8px; border-left: 5px solid #5a67d8; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        select, input { width: 100%; margin-top: 5px; padding: 8px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
+        button { margin-top: 20px; padding: 10px 20px; background: #5a67d8; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%; font-size: 1rem; }
+        button:hover { background: #434ba8; }
+        
+        /* Accessibility: Checkbox grouping */
+        fieldset { border: 1px solid #ccc; border-radius: 8px; padding: 10px; margin-top: 15px; }
+        legend { font-weight: bold; padding: 0 5px; }
+        .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .checkbox-item { display: flex; align-items: center; font-weight: normal; margin-top: 0; }
+        .checkbox-item input { width: auto; margin-right: 8px; }
+
+        .pillar-box { font-size: 0.9rem; color: #555; background: #e2e8f0; padding: 15px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Neuro Buddy</h2>
+    <h2>Morning Check-in</h2>
     
-    <label>Select Pillar:</label>
-    <select id="pillarSelect">
-        <option value="Self-Awareness">Self-Awareness</option>
-        <option value="Self-Management">Self-Management</option>
-        <option value="Social Awareness">Social Awareness</option>
-        <option value="Relationship Skills">Relationship Skills</option>
-        <option value="Responsible Decision-Making">Responsible Decision-Making</option>
+    <label for="logDate">Date:</label>
+    <input type="date" id="logDate">
+
+    <label for="wakeTime">Time Awake:</label>
+    <input type="time" id="wakeTime">
+
+    <label for="sleepQuality">Sleep Quality:</label>
+    <select id="sleepQuality">
+        <option value="slept_through">Slept through the night</option>
+        <option value="woke_1">Woke up 1 time</option>
+        <option value="woke_more">Woke up more than one time</option>
     </select>
 
-    <label>Current Stress Level:</label>
-    <select id="stressLevel">
-        <option value="1">1 (Calm)</option>
-        <option value="5">5 (Neutral)</option>
-        <option value="10">10 (Overwhelmed)</option>
+    <label for="physicalFeel">Physical State:</label>
+    <select id="physicalFeel">
+        <option value="rested">Rested</option>
+        <option value="neutral">Neutral</option>
+        <option value="tired">Tired</option>
     </select>
 
-    <textarea id="thoughtInput" placeholder="What is happening? (Antecedent -> Behavior)"></textarea>
-    <button onclick="saveEntry()">Log Entry</button>
+    <fieldset>
+        <legend>Emotional State (Select all that apply):</legend>
+        <div class="checkbox-grid" id="emotionalCheckboxes">
+            <label class="checkbox-item" for="f-calm"><input type="checkbox" id="f-calm" value="calm"> Calm</label>
+            <label class="checkbox-item" for="f-happy"><input type="checkbox" id="f-happy" value="happy"> Happy</label>
+            <label class="checkbox-item" for="f-motivated"><input type="checkbox" id="f-motivated" value="motivated"> Motivated</label>
+            <label class="checkbox-item" for="f-hopeful"><input type="checkbox" id="f-hopeful" value="hopeful"> Hopeful</label>
+            <label class="checkbox-item" for="f-hyperactive"><input type="checkbox" id="f-hyperactive" value="hyperactive"> Hyperactive</label>
+            <label class="checkbox-item" for="f-strong"><input type="checkbox" id="f-strong" value="strong"> Strong</label>
+            <label class="checkbox-item" for="f-neutral"><input type="checkbox" id="f-neutral" value="neutral"> Neutral</label>
+            <label class="checkbox-item" for="f-unmotivated"><input type="checkbox" id="f-unmotivated" value="unmotivated"> Unmotivated</label>
+            <label class="checkbox-item" for="f-defeated"><input type="checkbox" id="f-defeated" value="defeated"> Defeated</label>
+            <label class="checkbox-item" for="f-stressed"><input type="checkbox" id="f-stressed" value="stressed"> Stressed</label>
+            <label class="checkbox-item" for="f-sad"><input type="checkbox" id="f-sad" value="sad"> Sad</label>
+            <label class="checkbox-item" for="f-sore"><input type="checkbox" id="f-sore" value="sore"> Sore</label>
+            <label class="checkbox-item" for="f-sick"><input type="checkbox" id="f-sick" value="sick"> Sick</label>
+            <label class="checkbox-item" for="f-overstimulated"><input type="checkbox" id="f-overstimulated" value="overstimulated"> Overstimulated</label>
+        </div>
+    </fieldset>
+
+    <button onclick="saveMorningLog()">Log Morning</button>
 </div>
 
-<div id="logEntries"></div>
+<div class="pillar-box">
+    <h3>Daily Pillars of Emotional Intelligence</h3>
+    <ul>
+        <li>Self-Awareness</li>
+        <li>Self-Management</li>
+        <li>Social Awareness</li>
+        <li>Relationship Skills</li>
+        <li>Responsible Decision-Making</li>
+    </ul>
+</div>
 
 <script>
-    function saveEntry() {
-        const entry = {
-            pillar: document.getElementById('pillarSelect').value,
-            level: document.getElementById('stressLevel').value,
-            thought: document.getElementById('thoughtInput').value,
-            timestamp: new Date().toLocaleTimeString()
+    function saveMorningLog() {
+        const data = {
+            date: document.getElementById('logDate').value,
+            wakeTime: document.getElementById('wakeTime').value,
+            sleepQuality: document.getElementById('sleepQuality').value,
+            physicalFeel: document.getElementById('physicalFeel').value,
+            feelings: Array.from(document.querySelectorAll('#emotionalCheckboxes input:checked'))
+                           .map(cb => cb.value),
+            timestamp: new Date().toISOString()
         };
-        
-        const log = document.getElementById('logEntries');
-        const div = document.createElement('div');
-        div.className = 'entry';
-        div.innerHTML = `<strong>${entry.timestamp} | ${entry.pillar} (Level ${entry.level})</strong><br>${entry.thought}`;
-        log.prepend(div);
-        
-        document.getElementById('thoughtInput').value = '';
+        console.log("Firestore-ready data object:", data);
+        alert("Morning log captured!");
     }
 </script>
 
